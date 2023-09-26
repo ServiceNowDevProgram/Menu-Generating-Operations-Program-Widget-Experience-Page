@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ux_data_broker_graphql">
+    <sys_ux_data_broker_graphql action="INSERT_OR_UPDATE">
+        <api_name>x_759224_menu_bu_0.Get Menus</api_name>
+        <description/>
+        <mutates_server_data>false</mutates_server_data>
+        <name>Get Menus</name>
+        <output_schema/>
+        <private>false</private>
+        <props/>
+        <query>query {&#13;
+	x759224MenuBu0 {&#13;
+		menuBuilder {&#13;
+			getMenus {&#13;
+				sys_id&#13;
+				page&#13;
+				json&#13;
+                                description&#13;
+                                lastUpdated&#13;
+			}&#13;
+		}&#13;
+	}&#13;
+}</query>
+        <required_translations>[ ]</required_translations>
+        <schema_version>1.0.0</schema_version>
+        <script><![CDATA[(function buildQuery(query, inputs) { 
+         var qb = new GraphQLQueryBuilder(query, inputs);
+   // return appropriate query here
+    return qb; 
+   })(query, inputs);]]></script>
+        <sys_class_name>sys_ux_data_broker_graphql</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-04-27 06:29:50</sys_created_on>
+        <sys_id>3ce06a4897e2a5107720f0571153afcd</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Get Menus</sys_name>
+        <sys_package display_value="Menu Generating Operations Program Widget" source="x_759224_menu_bu_0">cf5ea28797d6a1107720f0571153af93</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Menu Generating Operations Program Widget">cf5ea28797d6a1107720f0571153af93</sys_scope>
+        <sys_update_name>sys_ux_data_broker_graphql_3ce06a4897e2a5107720f0571153afcd</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-04-27 07:08:48</sys_updated_on>
+        <type>query</type>
+        <use_record_domain>false</use_record_domain>
+    </sys_ux_data_broker_graphql>
+    <sys_translated_text action="delete_multiple" query="documentkey=3ce06a4897e2a5107720f0571153afcd"/>
+</record_update>

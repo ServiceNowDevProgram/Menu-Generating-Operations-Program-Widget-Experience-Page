@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_ux_addon_event_mapping">
+    <sys_ux_addon_event_mapping action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <controller/>
+        <description/>
+        <name>Approve Mapping</name>
+        <parent_macroponent display_value="Landing Page">2222bd04b5a93110412682a4b42d8ca9</parent_macroponent>
+        <source_component/>
+        <source_da display_value="approve">2e22bd044ba93110ccc36ce1f23fb6ad</source_da>
+        <source_element_id>data_row_1</source_element_id>
+        <sys_class_name>sys_ux_addon_event_mapping</sys_class_name>
+        <sys_created_by>system</sys_created_by>
+        <sys_created_on>2023-09-23 06:09:32</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>6622bd044fa93110b64cb202fa5574a7</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Approve Mapping</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Menu Generating Operations Program Widget" source="x_759224_menu_bu_0">cf5ea28797d6a1107720f0571153af93</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Menu Generating Operations Program Widget">cf5ea28797d6a1107720f0571153af93</sys_scope>
+        <sys_update_name>sys_ux_addon_event_mapping_6622bd044fa93110b64cb202fa5574a7</sys_update_name>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2023-09-23 06:09:32</sys_updated_on>
+        <target_event display_value="My tasks approve">a222bd04aaa93110a698fd3db6da13a7</target_event>
+        <target_payload_mapping>{
+  "type": "MAP_CONTAINER",
+  "container": {
+    "sysId": {
+      "type": "EVENT_PAYLOAD_BINDING",
+      "binding": {
+        "address": [
+          "sysId"
+        ]
+      }
+    },
+    "table": {
+      "type": "EVENT_PAYLOAD_BINDING",
+      "binding": {
+        "address": [
+          "table"
+        ]
+      }
+    }
+  }
+}</target_payload_mapping>
+    </sys_ux_addon_event_mapping>
+</record_update>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_graphql_schema">
+    <sys_graphql_schema action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <application_namespace>x759224MenuBu0</application_namespace>
+        <enforce_acl/>
+        <name>Menu Builder</name>
+        <namespace>menuBuilder</namespace>
+        <paths>Menu:description,Menu:json,Menu:lastUpdated,Menu:page,Menu:sys_id,Mutation:saveMenu,Query:getMenus</paths>
+        <requires_acl_authorization>false</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <schema>schema {&#13;
+	query: Query&#13;
+	mutation: Mutation&#13;
+}&#13;
+&#13;
+type Query {&#13;
+	getMenus: [Menu]&#13;
+}&#13;
+&#13;
+type Mutation {&#13;
+	saveMenu(sys_id: String, json: String): String&#13;
+}&#13;
+&#13;
+type Menu {&#13;
+	json: String @source(value: "value.display_value")&#13;
+	page: String @source(value: "page.display_value")&#13;
+	description: String @source(value: "description.display_value")&#13;
+	sys_id: String @source(value: "sys_id.display_value")&#13;
+	lastUpdated: String @source(value: "sys_updated_on.display_value")&#13;
+}&#13;
+</schema>
+        <sys_class_name>sys_graphql_schema</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-04-26 05:56:11</sys_created_on>
+        <sys_id>a54091bb97de25107720f0571153af33</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>Menu Builder</sys_name>
+        <sys_package display_value="Menu Generating Operations Program Widget" source="x_759224_menu_bu_0">cf5ea28797d6a1107720f0571153af93</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Menu Generating Operations Program Widget">cf5ea28797d6a1107720f0571153af93</sys_scope>
+        <sys_update_name>sys_graphql_schema_a54091bb97de25107720f0571153af33</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-05-01 06:08:23</sys_updated_on>
+        <type_names/>
+    </sys_graphql_schema>
+</record_update>

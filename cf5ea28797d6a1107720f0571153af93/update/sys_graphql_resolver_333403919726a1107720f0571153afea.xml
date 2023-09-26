@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_graphql_resolver">
+    <sys_graphql_resolver action="INSERT_OR_UPDATE">
+        <name>Save Menu</name>
+        <schema display_value="Menu Builder">a54091bb97de25107720f0571153af33</schema>
+        <script><![CDATA[(function process( /*ResolverEnvironment*/ env) {
+    let menuGR = new GlideRecord('sys_ux_page_property');
+    menuGR.get(env.getArguments().sys_id);
+
+    if (menuGR.isValidRecord()) {
+        menuGR.setValue('value', env.getArguments().json);
+        return menuGR.update();
+    }
+
+    return '';
+})(env);]]></script>
+        <sys_class_name>sys_graphql_resolver</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-05-01 06:13:38</sys_created_on>
+        <sys_id>333403919726a1107720f0571153afea</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Save Menu</sys_name>
+        <sys_package display_value="Menu Generating Operations Program Widget" source="x_759224_menu_bu_0">cf5ea28797d6a1107720f0571153af93</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Menu Generating Operations Program Widget">cf5ea28797d6a1107720f0571153af93</sys_scope>
+        <sys_update_name>sys_graphql_resolver_333403919726a1107720f0571153afea</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-05-01 06:13:38</sys_updated_on>
+    </sys_graphql_resolver>
+</record_update>

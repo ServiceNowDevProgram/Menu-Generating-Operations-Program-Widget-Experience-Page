@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ux_client_script">
+    <sys_ux_client_script action="INSERT_OR_UPDATE">
+        <controller_preset/>
+        <includes/>
+        <macroponent display_value="Record Page(request)">a622bd046ba9311049541db3cf1160a3</macroponent>
+        <name>Set catalog Imge</name>
+        <preset/>
+        <required_translations>[ ]</required_translations>
+        <script><![CDATA[/**
+ * @param {params} params
+ * @param {api} params.api
+ * @param {any} params.event
+ * @param {any} params.imports
+ * @param {ApiHelpers} params.helpers
+ */
+function handler({
+    api,
+    event,
+    helpers,
+    imports
+}) {
+    var model = {};
+    var input = api.data.look_up_records_1.results[0].cat_item._reference;
+    var modelData = input.picture.displayValue;
+    if (modelData != undefined) {
+        model.headerImage = modelData;
+        model.fieldLabel = "Test value"; //Here only to support the required structure of the object
+    }
+    api.setState('setImage', model);
+}]]></script>
+        <script_api_version>2.0.0</script_api_version>
+        <sys_class_name>sys_ux_client_script</sys_class_name>
+        <sys_created_by>system</sys_created_by>
+        <sys_created_on>2023-09-23 06:09:31</sys_created_on>
+        <sys_id>6e22bd0454a93110f56cbd0c9c87d799</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Set catalog Imge</sys_name>
+        <sys_package display_value="Menu Generating Operations Program Widget" source="x_759224_menu_bu_0">cf5ea28797d6a1107720f0571153af93</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Menu Generating Operations Program Widget">cf5ea28797d6a1107720f0571153af93</sys_scope>
+        <sys_update_name>sys_ux_client_script_6e22bd0454a93110f56cbd0c9c87d799</sys_update_name>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2023-09-23 06:09:31</sys_updated_on>
+        <target>macroponent</target>
+        <type>default</type>
+    </sys_ux_client_script>
+</record_update>

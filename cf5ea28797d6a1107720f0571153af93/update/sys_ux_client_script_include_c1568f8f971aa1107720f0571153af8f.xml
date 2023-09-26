@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ux_client_script_include">
+    <sys_ux_client_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <api_name>x_759224_menu_bu_0.MenuBuilderUtils</api_name>
+        <includes/>
+        <name>MenuBuilderUtils</name>
+        <required_translations>[
+    
+]</required_translations>
+        <script><![CDATA[function include({ imports }) {
+    // TreeNode represents an individual menu item within a menu
+    class TreeNode {
+        constructor(
+            id, // unique identifier for a menu item
+            children, // an array of TreeNodes
+            parent, // id of the item's parent menu item (or null if a top-level menu item)
+            choice = "menu", // menu or action
+            label = null, // name of the menu item
+            type = null, // internal or external link type
+            page = null, // name of the page to internally link to
+            sys_id = null, // value of the sys_id for an internal link
+            href = null // href for an external link
+        ) {
+            this.id = id;
+            this.children = children;
+            this.parent = parent;
+            this.choice = choice;
+            this.label = label;
+            this.type = type;
+            this.page = page;
+            this.sys_id = sys_id;
+            this.href = href;
+        }
+
+        // Setter methods for updating properties
+
+        set setChoice(choice) {
+            this.choice = choice;
+        }
+
+        set setLabel(label) {
+            this.label = label;
+        }
+
+        set setType(type) {
+            this.type = type;
+        }
+
+        set setPage(page) {
+            this.page = page;
+        }
+
+        set setSysID(sys_id) {
+            this.sys_id = sys_id;
+        }
+
+        set setHREF(href) {
+            this.href = href;
+        }
+    }
+
+    /**
+     * Each menu item in a menu is represented in two ways:
+     * menu client state parameter
+     * menuTree client state parameter
+     * 
+     * menu tracks an individual item's content: it's label, type, page, sys_id, href
+     * - structured like:
+     * {
+     *  menu-id: json string for this item
+     *  menu-id: json string for this item
+     * }
+     * 
+     * menuTree tracks an individual item's position within the menu: top-level item, sub-level item
+     * - structured like:
+     * [
+     *  {
+     *      id
+     *      children: [menuTrees],
+     *      parent
+     *      ...
+     *  }
+     * ]
+     * 
+     * The UX Page Property "chrome_menu" stores a portal's menu as a JSON string. The menuTree is similarly structured to
+     * how the OOB JSON string is where each object in the array is a top-level item and contains a children property for any
+     * sub-menu items. So to recreate the necessary JSON, menuTree can be recursively traversed and menu is used as a lookup for the content of the JSON
+     * 
+     */
+
+    /**
+     * Parameters:
+     * menu: the current value of the menu client state parameter
+     * id: id of the menu item to update
+     * input: the JSON value of this menu item
+     * isDelete: flag of whether the item is being deleted
+     * menuTree: the current value of the menuTree client state parameter
+     * 
+     * Returns: new value to set the menu client state parameter to
+     */
+    const updateMenu = (menu, id, input, isDelete = false, menuTree) => {
+        let newMenu = { ...menu };
+
+        if (isDelete) {
+            deleteNode(id, newMenu, menuTree);
+        } else {
+            newMenu[id] = input;
+        }
+
+        return newMenu;
+    };
+
+    /**
+     * Parameters:
+     * menuTree: the current value of the menuTree client state parameter
+     * choice: action or menu
+     * id: id of the menu item
+     * parent: id of the menu item's parent
+     * isDelete: flag of whether item is being deleted
+     * menu: the current value of the menu client state parameter
+     * 
+     * Returns: new value to set the menuTree client state parameter to
+     */
+    const updateTree = (
+        menuTree,
+        choice,
+        id,
+        parent = null,
+        isDelete = false,
+        menu
+    ) => {
+        if (isDelete) {
+            const nextMenu = updateMenu(menu, id, null, true, menuTree);
+
+            let newState = [...JSON.parse(JSON.stringify(menuTree))];
+
+            const path = getRoot(id, newState);
+
+            let node = newState;
+            for (const key of path) {
+                node = node[key];
+            }
+
+            if (node.parent) {
+                const parentPath = getRoot(node.parent, newState);
+
+                node = newState;
+                for (const key of parentPath) {
+                    node = node[key];
+                }
+
+                // Deleting a child node, remove itself from its parent children
+                node.children = node.children.filter(
+                    (child) => child.id !== id
+                );
+            } else {
+                // Deleting top-level node
+                newState = newState.filter((tree) => tree.id !== id);
+            }
+
+            return [nextMenu, newState];
+        } else {
+            // New top-level item
+            if (!parent) {
+                // Initial item starts out with no children or parent, action or menu
+                const newTree = new TreeNode(id, [], null, choice);
+                return newTree;
+            } else {
+                const newState = [...JSON.parse(JSON.stringify(menuTree))];
+
+                const path = getRoot(parent, newState);
+
+                let node = newState;
+                for (const key of path) {
+                    node = node[key];
+                }
+
+                // Add new sub-level item to its parent children
+                node.children.push(new TreeNode(id, [], parent, choice));
+
+                return newState;
+            }
+        }
+    };
+
+    /**
+     * Helper functions to traverse through menuTree
+     * Lists out how to index into menuTree to get the menu item within the array of objects
+     */
+
+    const getRoot = (parent, menuTree) => {
+        for (let i = 0; i < menuTree.length; i++) {
+            let path = [];
+            let found = traverse(menuTree[i], parent, path, i);
+
+            if (found) return path;
+        }
+    };
+
+    const traverse = (node, parent, path, i) => {
+        if (node.id === parent) {
+            path.push(i);
+            return true;
+        }
+
+        if (node.children) {
+            path.push(i);
+            path.push("children");
+
+            for (let i = 0; i < node.children.length; i++) {
+                let found = traverse(node.children[i], parent, path, i);
+
+                if (found) return true;
+                else {
+                    path.pop();
+                    path.pop();
+                }
+            }
+        }
+
+        return false;
+    };
+
+    // Removes the item and it's children from menu
+    const deleteNode = (id, menu, menuTree) => {
+        const path = getRoot(id, menuTree);
+
+        let node = menuTree;
+        for (const key of path) {
+            node = node[key];
+        }
+
+        for (let i = 0; i < node.children.length; i++) {
+            deleteNode(node.children[i].id, menu, menuTree);
+        }
+
+        delete menu[id];
+    };
+
+    /**
+     * These functions create the necessary JSON structure for the sys_ux_page_property JSON value from menu and menuTree values
+     */
+
+    const traverseTree = (tree, menu) => {
+        if (tree.children.length === 0) return;
+
+        for (let child of tree.children) {
+            traverseTree(child, menu);
+
+            if (child.parent) {
+                let parentJSON = menu[child.parent];
+                if (!parentJSON.children) parentJSON.children = {};
+                if (!parentJSON.children.items) parentJSON.children.items = [];
+
+                if (child.choice === "action") {
+                    if (menu[child.id])
+                        parentJSON.children.action = menu[child.id].value;
+                    else parentJSON.children.action = undefined;
+                } else {
+                    parentJSON.children.items.push({ ...menu[child.id] });
+                }
+            }
+        }
+    };
+
+    const generateJSON = (menu, trees) => {
+        menu = JSON.parse(JSON.stringify(menu));
+        trees = JSON.parse(JSON.stringify(trees));
+
+        for (let tree of trees) {
+            traverseTree(tree, menu);
+        }
+
+        let outputJSON = trees.map((tree) => {
+            return JSON.stringify(menu[tree.id]);
+        });
+
+        if (outputJSON.length > 1) {
+            outputJSON = outputJSON.join(",");
+        }
+
+        return `[${outputJSON}]`;
+    };
+
+    /**
+     * These functions do the above logic in reverse. Starting from the JSON structure for the sys_ux_page_property JSON value, create menu and menuTree values
+     */
+
+    const handleImport = (inputJSON) => {
+        const menu = {};
+        const menuTree = [];
+
+        for (let tree of inputJSON) {
+            traverseJSON(tree, menu, menuTree);
+        }
+
+        return [menu, menuTree];
+    };
+
+    const traverseJSON = (
+        tree,
+        menu,
+        menuTree,
+        parentID = null,
+        parentNode = null,
+        choice = "menu"
+    ) => {
+        const id = uuidv4();
+        menu[id] = { value: tree.value };
+
+        let {
+            value: {
+                label: { message },
+            },
+        } = tree;
+        let {
+            value: { type },
+        } = tree;
+        let route = tree.value.value?.route;
+        let sysId = tree.value.value?.fields?.sysId;
+        let href = tree.value.value?.href;
+
+        const { children } = tree;
+        const action = children?.action;
+
+        let actionTree;
+
+        let newTree = new TreeNode(
+            id,
+            [],
+            parentID,
+            choice,
+            message,
+            type,
+            route,
+            sysId,
+            href
+        );
+
+        if (children) {
+            for (const child of children.items) {
+                traverseJSON(child, menu, menuTree, id, newTree);
+            }
+
+            // no recursion for actions so the parentNode is newTree
+            if (action) {
+                message = action.label?.message;
+                type = action.type;
+                route = action.value?.route;
+                sysId = action.value?.fields?.sysId;
+                href = action.value?.href;
+
+                const actionID = uuidv4();
+                menu[actionID] = { value: action };
+
+                actionTree = new TreeNode(
+                    actionID,
+                    [],
+                    id, // newTree's id
+                    "action",
+                    message,
+                    type,
+                    route,
+                    sysId,
+                    href
+                );
+            }
+        }
+
+        if (actionTree) newTree.children.push(actionTree);
+
+        if (parentID) {
+            parentNode.children.push(newTree);
+        } else {
+            menuTree.push(newTree);
+        }
+    };
+
+    /**
+     * Replacement for crypto.randomUUID()
+     * https://stackoverflow.com/a/8809472
+     */
+    function uuidv4() {
+        var d = new Date().getTime(); // Timestamp
+        var d2 =
+            (typeof performance !== "undefined" &&
+                performance.now &&
+                performance.now() * 1000) ||
+            0; // Time in microseconds since page-load or 0 if unsupported
+        return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+            /[xy]/g,
+            function (c) {
+                var r = Math.random() * 16; // random number between 0 and 16
+                if (d > 0) {
+                    // Use timestamp until depleted
+                    r = (d + r) % 16 | 0;
+                    d = Math.floor(d / 16);
+                } else {
+                    // Use microseconds since page-load if supported
+                    r = (d2 + r) % 16 | 0;
+                    d2 = Math.floor(d2 / 16);
+                }
+                return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
+            }
+        );
+    }
+
+    return { updateMenu, updateTree, generateJSON, handleImport };
+}
+]]></script>
+        <script_api_version>2.0.0</script_api_version>
+        <sys_class_name>sys_ux_client_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-04-24 06:35:22</sys_created_on>
+        <sys_id>c1568f8f971aa1107720f0571153af8f</sys_id>
+        <sys_mod_count>16</sys_mod_count>
+        <sys_name>MenuBuilderUtils</sys_name>
+        <sys_package display_value="Menu Generating Operations Program Widget" source="x_759224_menu_bu_0">cf5ea28797d6a1107720f0571153af93</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Menu Generating Operations Program Widget">cf5ea28797d6a1107720f0571153af93</sys_scope>
+        <sys_update_name>sys_ux_client_script_include_c1568f8f971aa1107720f0571153af8f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-09-26 02:38:42</sys_updated_on>
+    </sys_ux_client_script_include>
+</record_update>

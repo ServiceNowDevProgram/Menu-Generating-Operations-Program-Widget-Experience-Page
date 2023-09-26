@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ux_data_broker_graphql">
+    <sys_ux_data_broker_graphql action="INSERT_OR_UPDATE">
+        <api_name>x_759224_menu_bu_0.Save Menu</api_name>
+        <description/>
+        <mutates_server_data>true</mutates_server_data>
+        <name>Save Menu</name>
+        <output_schema/>
+        <private>false</private>
+        <props>[&#13;
+  {&#13;
+    "name": "sys_id",&#13;
+    "label": "Sys ID",&#13;
+    "description": "The sys_id of the UX Page Property",&#13;
+    "fieldType": "string",&#13;
+    "mandatory": true&#13;
+  },&#13;
+  {&#13;
+    "name": "json",&#13;
+    "label": "JSON",&#13;
+    "description": "The JSON to set the UX Page Property value to",&#13;
+    "fieldType": "string",&#13;
+    "mandatory": true&#13;
+  }&#13;
+]</props>
+        <query>mutation ($sys_id: String!, $json: String!) {&#13;
+	x759224MenuBu0 {&#13;
+		menuBuilder {&#13;
+			saveMenu(sys_id: $sys_id, json: $json)&#13;
+		}&#13;
+	}&#13;
+}</query>
+        <required_translations>[ {
+  "message" : "JSON",
+  "comment" : ""
+}, {
+  "message" : "Sys ID",
+  "comment" : ""
+}, {
+  "message" : "The JSON to set the UX Page Property value to",
+  "comment" : ""
+}, {
+  "message" : "The sys_id of the UX Page Property",
+  "comment" : ""
+} ]</required_translations>
+        <schema_version>1.0.0</schema_version>
+        <script><![CDATA[(function buildQuery(query, inputs) { 
+         var qb = new GraphQLQueryBuilder(query, inputs);
+   // return appropriate query here
+    return qb; 
+   })(query, inputs);]]></script>
+        <sys_class_name>sys_ux_data_broker_graphql</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-05-08 05:47:43</sys_created_on>
+        <sys_id>c2c1cb2b97a625107720f0571153af4d</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>Save Menu</sys_name>
+        <sys_package display_value="Menu Generating Operations Program Widget" source="x_759224_menu_bu_0">cf5ea28797d6a1107720f0571153af93</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Menu Generating Operations Program Widget">cf5ea28797d6a1107720f0571153af93</sys_scope>
+        <sys_update_name>sys_ux_data_broker_graphql_c2c1cb2b97a625107720f0571153af4d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-05-10 06:21:01</sys_updated_on>
+        <type>query</type>
+        <use_record_domain>false</use_record_domain>
+    </sys_ux_data_broker_graphql>
+    <sys_translated_text action="delete_multiple" query="documentkey=c2c1cb2b97a625107720f0571153af4d"/>
+</record_update>

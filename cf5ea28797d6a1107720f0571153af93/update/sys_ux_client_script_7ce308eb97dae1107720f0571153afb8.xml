@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ux_client_script">
+    <sys_ux_client_script action="INSERT_OR_UPDATE">
+        <controller_preset/>
+        <includes>c1568f8f971aa1107720f0571153af8f</includes>
+        <macroponent display_value="Default">279f2ac797d6a1107720f0571153aff1</macroponent>
+        <name>updateTree</name>
+        <preset/>
+        <required_translations>[
+    
+]</required_translations>
+        <script><![CDATA[/**
+ * @param {params} params
+ * @param {api} params.api
+ * @param {any} params.event
+ * @param {any} params.imports
+ * @param {ApiHelpers} params.helpers
+ */
+function handler({
+    api,
+    event,
+    helpers,
+    imports
+}) {
+    const {
+        updateTree,
+        generateJSON
+    } = imports['x_759224_menu_bu_0.MenuBuilderUtils']();
+
+    const tree = event.payload.tree;
+    const {
+        choice,
+        id,
+        parent,
+        isDelete = false
+    } = tree;
+
+
+    // Delete All
+    if (choice === 'delete_all') {
+        api.setState('menuTree', []);
+        api.setState('menu', {});
+        api.setState('outputJSON', '[]');
+        return;
+    }
+
+    // Add top-level menu items
+    if (!parent && !isDelete) {
+        const newTree = updateTree(api.state.menuTree, choice, id);
+
+        api.setState('menuTree', [...api.state.menuTree, newTree]);
+
+        return;
+    }
+
+    // Add sub-level menu items
+    if (!isDelete) {
+        const nextTree = updateTree(api.state.menuTree, choice, id, parent, isDelete);
+
+        api.setState('menuTree', nextTree);
+
+    }
+    // Delete individual menu item. If deleting a parent, all of its children will also be deleted
+    else {
+        const [nextMenu, nextTree] = updateTree(api.state.menuTree, choice, id, parent, isDelete, api.state.menu);
+
+        api.setState('menu', nextMenu);
+        api.setState('menuTree', nextTree);
+    }
+
+    api.setState('outputJSON', ({
+        api: {
+            state: {
+                menu,
+                menuTree
+            }
+        }
+    }) => {
+        return generateJSON(menu, menuTree);
+    });
+}]]></script>
+        <script_api_version>2.0.0</script_api_version>
+        <sys_class_name>sys_ux_client_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-04-25 05:42:22</sys_created_on>
+        <sys_id>7ce308eb97dae1107720f0571153afb8</sys_id>
+        <sys_mod_count>22</sys_mod_count>
+        <sys_name>updateTree</sys_name>
+        <sys_package display_value="Menu Generating Operations Program Widget" source="x_759224_menu_bu_0">cf5ea28797d6a1107720f0571153af93</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Menu Generating Operations Program Widget">cf5ea28797d6a1107720f0571153af93</sys_scope>
+        <sys_update_name>sys_ux_client_script_7ce308eb97dae1107720f0571153afb8</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-09-26 02:25:12</sys_updated_on>
+        <target>macroponent</target>
+        <type>default</type>
+    </sys_ux_client_script>
+</record_update>
