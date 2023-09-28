@@ -1,5 +1,5 @@
 # Introduction
-If you ever get stuck, you can find us over on the [SNDEVS](https://sndevs.com) slack ([invite.sndevs.com](https://invite.sndevs.com)) in either the #hactoberfest channel or the #next-experience-uib-workspace channel. 
+If you ever get stuck, you can find us over on the [SNDEVS](https://sndevs.com) community ([invite.sndevs.com](https://invite.sndevs.com)) in either the #hactoberfest channel or the #next-experience-uib-workspace channel. 
 
 Things you'll need:
 - A [ServiceNow Developer Instance](https://developer.servicenow.com/)
