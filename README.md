@@ -15,6 +15,7 @@ And lastly, this repository is part of a larger coordinated effort by the Servic
 - [What is this even for?](#what-is-this-even-for)
 - [What do i need to know?](#what-do-i-need-to-know)
 - [Information on Portal Experience menus](#some-information-on-portal-experience-menus)
+- [Installation Instructions](#installation-instructions)
 # What is this even for?
 You can create something called Portal Experiences in UI Builder, which are similar to Workspaces. They aren't currently a replacement for Angular Service Portal as of the writing of this repo, you can read more about this [on the Next Experience Community forum](https://www.servicenow.com/community/next-experience-articles/portal-experience-faqs/ta-p/2331979). These Portal Experiences have menus that are generated from JSON, and it's a pain to manage them right now. So Jesalyn and I decided to do something fun - why not learn how to make a custom component while simultaneously spending hundreds of hours making a solution for something that only mildly inconvenienced us? (And then submit it as a Creator Con lab!)
 
@@ -44,3 +45,17 @@ Actions have similar behavior, which I haven't cataloged. Sometimes they show up
 
 Visual of what i've figured out so far.
 
+
+# Installation instructions
+Follow these instructions to install the experience page and the menu builder component in your instance.
+
+If you ever get stuck, you can find us over on the [SNDEVS](https://sndevs.com) community ([invite.sndevs.com](https://invite.sndevs.com)) in either the `#hactoberfest` channel or the `#next-experience-uib-workspace` channel. 
+
+Things you'll need:
+- A [ServiceNow Developer Instance](https://developer.servicenow.com/)
+
+1. Open App Engine Studio and import this repository directly to your instance.
+2. Install the [Update Set provided in the Releases section of the sister repository](https://github.com/ServiceNowDevProgram/Menu-Generating-Operations-Program-Widget-Custom-Component/releases/tag/original).
+3. Search for `Hacktober23` in the Filter Navigation 
+	1. **Menu Builder** – takes you to the page to play with the component 
+	2. **UI Builder** – takes you to the UI Builder page for the Menu Builder page 
