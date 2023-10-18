@@ -19,7 +19,8 @@
             type = null, // internal or external link type
             page = null, // name of the page to internally link to
             sys_id = null, // value of the sys_id for an internal link
-            href = null // href for an external link
+            href = null, // href for an external link
+            rightIcon = null // right icon
         ) {
             this.id = id;
             this.children = children;
@@ -30,6 +31,7 @@
             this.page = page;
             this.sys_id = sys_id;
             this.href = href;
+            this.rightIcon = rightIcon
         }
 
         // Setter methods for updating properties
@@ -56,6 +58,10 @@
 
         set setHREF(href) {
             this.href = href;
+        }
+
+        set setRightIcon(rightIcon) {
+            this.rightIcon = rightIcon;
         }
     }
 
@@ -313,12 +319,19 @@
                 label: { message },
             },
         } = tree;
+
         let {
             value: { type },
         } = tree;
+
+        let {
+            value: { rightIcon },
+        } = tree;
+
         let route = tree.value.value?.route;
         let sysId = tree.value.value?.fields?.sysId;
         let href = tree.value.value?.href;
+
 
         const { children } = tree;
         const action = children?.action;
@@ -334,7 +347,8 @@
             type,
             route,
             sysId,
-            href
+            href,
+            rightIcon
         );
 
         if (children) {
@@ -346,6 +360,7 @@
             if (action) {
                 message = action.label?.message;
                 type = action.type;
+                rightIcon = action.rightIcon;
                 route = action.value?.route;
                 sysId = action.value?.fields?.sysId;
                 href = action.value?.href;
@@ -362,7 +377,8 @@
                     type,
                     route,
                     sysId,
-                    href
+                    href,
+                    rightIcon
                 );
             }
         }
@@ -413,13 +429,13 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-04-24 06:35:22</sys_created_on>
         <sys_id>c1568f8f971aa1107720f0571153af8f</sys_id>
-        <sys_mod_count>16</sys_mod_count>
+        <sys_mod_count>18</sys_mod_count>
         <sys_name>MenuBuilderUtils</sys_name>
-        <sys_package display_value="Menu Generating Operations Program Widget" source="x_759224_menu_bu_0">cf5ea28797d6a1107720f0571153af93</sys_package>
+        <sys_package display_value="Menu-Generating-Operations-Program-Widget-Experience-Page" source="x_759224_menu_bu_0">cf5ea28797d6a1107720f0571153af93</sys_package>
         <sys_policy/>
-        <sys_scope display_value="Menu Generating Operations Program Widget">cf5ea28797d6a1107720f0571153af93</sys_scope>
+        <sys_scope display_value="Menu-Generating-Operations-Program-Widget-Experience-Page">cf5ea28797d6a1107720f0571153af93</sys_scope>
         <sys_update_name>sys_ux_client_script_include_c1568f8f971aa1107720f0571153af8f</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2023-09-26 02:38:42</sys_updated_on>
+        <sys_updated_by>deepak.singh@intimetec.com</sys_updated_by>
+        <sys_updated_on>2023-10-18 08:59:26</sys_updated_on>
     </sys_ux_client_script_include>
 </record_update>
