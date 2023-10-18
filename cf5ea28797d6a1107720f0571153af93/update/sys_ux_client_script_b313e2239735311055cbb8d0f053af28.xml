@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ux_client_script">
+    <sys_ux_client_script action="INSERT_OR_UPDATE">
+        <controller_preset/>
+        <includes>c1568f8f971aa1107720f0571153af8f</includes>
+        <macroponent display_value="Aylee's Variant">671322239735311055cbb8d0f053af3b</macroponent>
+        <name>updateTree</name>
+        <preset/>
+        <required_translations>[
+    
+]</required_translations>
+        <script><![CDATA[/**
+ * @param {params} params
+ * @param {api} params.api
+ * @param {any} params.event
+ * @param {any} params.imports
+ * @param {ApiHelpers} params.helpers
+ */
+function handler({
+    api,
+    event,
+    helpers,
+    imports
+}) {
+    const {
+        updateTree,
+        generateJSON,
+        handleImport
+    } = imports['x_759224_menu_bu_0.MenuBuilderUtils']();
+
+    const tree = event.payload.tree;
+    const {
+        choice,
+        id,
+        parent,
+        isDelete = false
+    } = tree;
+
+
+    // Delete All
+    if (choice === 'delete_all') {
+        api.setState('menuTree', []);
+        api.setState('menu', {});
+        api.setState('outputJSON', '[]');
+        return;
+    }
+
+    // Handle undo and redo
+    if (choice === 'undo' || choice === 'redo') {
+        // Increase/decrease the index of what to display from the JSON output history
+        let newHistoryIndex = api.state.historyIndex + (choice === 'undo' ? 1 : -1);
+        if (newHistoryIndex < 0 || newHistoryIndex >= api.state.outputJSONHistory.length) return;
+        api.setState('historyIndex', newHistoryIndex);
+        // Update the menu and tree with the new state pulled from the history
+        const jsonAtHistoryIndex = JSON.parse(api.state.outputJSONHistory[newHistoryIndex]);
+        const [menuHistory, menuTreeHistory] = handleImport(jsonAtHistoryIndex);
+        api.setState('menu', menuHistory);
+        api.setState('menuTree', menuTreeHistory);
+        api.setState('outputJSON', jsonAtHistoryIndex);
+        return;
+    }
+
+    // Add top-level menu items
+    if (!parent && !isDelete) {
+        const newTree = updateTree(api.state.menuTree, choice, id);
+
+        api.setState('menuTree', [...api.state.menuTree, newTree]);
+
+        return;
+    }
+
+    // Add sub-level menu items
+    if (!isDelete) {
+        const nextTree = updateTree(api.state.menuTree, choice, id, parent, isDelete);
+
+        api.setState('menuTree', nextTree);
+
+    }
+    // Delete individual menu item. If deleting a parent, all of its children will also be deleted
+    else {
+        const [nextMenu, nextTree] = updateTree(api.state.menuTree, choice, id, parent, isDelete, api.state.menu);
+
+        api.setState('menu', nextMenu);
+        api.setState('menuTree', nextTree);
+    }
+
+    // Save the JSON output and add to the JSON output history
+    let jsonOutput = null;
+    api.setState('outputJSON', ({
+        api: {
+            state: {
+                menu,
+                menuTree
+            }
+        }
+    }) => {
+        jsonOutput = generateJSON(menu, menuTree);
+        return jsonOutput;
+    });
+    // If a change has been made to the menu/menuTree (outside of undoing and redoing), add it to the history
+    if (api.state.outputJSONHistory.length == 0 || api.state.outputJSONHistory[api.state.historyIndex] !== jsonOutput) {
+        api.setState('outputJSONHistory', ({
+            api: {
+                state: {
+                    outputJSONHistory,
+                    historyIndex
+                }
+            }
+        }) => {
+            let history = [...outputJSONHistory];
+            // If the change occurred right after an undo/redo action, remove the history that was traversed through during that action
+            if (historyIndex > 0) {
+                history.splice(0, historyIndex);
+            }
+            // Add the latest change to the front of the history list
+            history.unshift(jsonOutput);
+            if (history.length > 15) history.pop();
+            return history;
+        });
+        // Since a normal change was made (outside of undoing and redoing), reset the index so that the most recent change is displayed
+        if (api.state.historyIndex > 0) {
+            api.setState('historyIndex', 0);
+        }
+    }
+}]]></script>
+        <script_api_version>2.0.0</script_api_version>
+        <sys_class_name>sys_ux_client_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2023-10-16 16:57:50</sys_created_on>
+        <sys_id>b313e2239735311055cbb8d0f053af28</sys_id>
+        <sys_mod_count>65</sys_mod_count>
+        <sys_name>updateTree</sys_name>
+        <sys_package display_value="Menu-Generating-Operations-Program-Widget-Experience-Page" source="x_759224_menu_bu_0">cf5ea28797d6a1107720f0571153af93</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Menu-Generating-Operations-Program-Widget-Experience-Page">cf5ea28797d6a1107720f0571153af93</sys_scope>
+        <sys_update_name>sys_ux_client_script_b313e2239735311055cbb8d0f053af28</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2023-10-17 19:27:42</sys_updated_on>
+        <target>macroponent</target>
+        <type>default</type>
+    </sys_ux_client_script>
+</record_update>
