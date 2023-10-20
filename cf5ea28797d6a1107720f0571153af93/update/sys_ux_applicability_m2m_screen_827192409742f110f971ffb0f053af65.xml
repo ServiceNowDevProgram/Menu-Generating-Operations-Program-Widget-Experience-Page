@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ux_applicability_m2m_screen">
+    <sys_ux_applicability_m2m_screen action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applicability display_value="Public - Global">25c69a7197f5b110f971ffb0f053af94</applicability>
+        <order>0</order>
+        <screen display_value="deepak-64742">6ba2dd6a977db110f971ffb0f053af80</screen>
+        <sys_class_name>sys_ux_applicability_m2m_screen</sys_class_name>
+        <sys_created_by>deepak.singh@intimetec.com</sys_created_by>
+        <sys_created_on>2023-10-18 04:57:40</sys_created_on>
+        <sys_id>827192409742f110f971ffb0f053af65</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="Menu-Generating-Operations-Program-Widget-Experience-Page" source="x_759224_menu_bu_0">cf5ea28797d6a1107720f0571153af93</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Menu-Generating-Operations-Program-Widget-Experience-Page">cf5ea28797d6a1107720f0571153af93</sys_scope>
+        <sys_update_name>sys_ux_applicability_m2m_screen_827192409742f110f971ffb0f053af65</sys_update_name>
+        <sys_updated_by>deepak.singh@intimetec.com</sys_updated_by>
+        <sys_updated_on>2023-10-18 04:57:40</sys_updated_on>
+    </sys_ux_applicability_m2m_screen>
+</record_update>
